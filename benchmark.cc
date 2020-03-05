@@ -406,16 +406,20 @@ void matmult4(float ans[], float a[], float b[], uint32_t n) {
  */
 template<typename Func>
 void benchmark1(const char msg[], Func f, uint32_t n) {
+	clock_t totalTime=0;
 	for (uint32_t trials = 0; trials < 10; trials++) {
 		clock_t t0 = clock();
 		uint64_t res = f(n);
 		clock_t t1 = clock();
+		totalTime+=t1-t0;
 		cout << setw(12) << msg << setw(18) << res << '\t' << (t1-t0) << '\n';
 	}
+	cout<<setw(12)<<"AVG:"<<setw(18)<<"\t"<<(totalTime/10)<<'\n';
 }
 
 template<typename Func>
-void benchmark2(const char msg[], Func f, uint32_t n) {
+void benchmark2(const char msg[], Func f, uint32_t n) {	
+	clock_t totalTime=0;
 	uint32_t* p = new uint32_t[n]; // allocate a big chunk of memory
 	for (int i =  0; i < n; i++)
 		p[i] = 0;
@@ -424,13 +428,16 @@ void benchmark2(const char msg[], Func f, uint32_t n) {
 		uint64_t res = f(p, n); // give it to the function to play with
 		clock_t t1 = clock();
 		cout << setw(12) << msg << setw(18) << res << '\t' << (t1-t0) << '\n';
+		totalTime+=t1-t0;
 	}
 	delete [] p;
+	cout<<setw(12)<<"AVG:"<<setw(18)<<"\t"<<(totalTime/10)<<'\n';
 }
 
 // benchmark for floating point arrays
 template<typename Func>
 void benchmark3(const char msg[], Func f, uint32_t n) {
+	clock_t totalTime=0;
   float* p = new float[n];
   for (int i = 0; i < n; i++)
     p[i] = 0;
@@ -439,13 +446,16 @@ void benchmark3(const char msg[], Func f, uint32_t n) {
 		float res = f(p, n); // give it to the function to play with
 		clock_t t1 = clock();
 		cout << setw(12) << msg << setw(18) << res << '\t' << (t1-t0) << '\n';
+		totalTime+=t1-t0;
 	}
   delete [] p;
+	cout<<setw(12)<<"AVG:"<<setw(18)<<"\t"<<(totalTime/10)<<'\n';
 }
 
 // benchmark for double arrays
 template<typename Func>
 void benchmark4(const char msg[], Func f, uint32_t n) {
+	clock_t totalTime=0;
   double* p = new double[n];
   for (int i = 0; i < n; i++)
     p[i] = 0;
@@ -454,35 +464,44 @@ void benchmark4(const char msg[], Func f, uint32_t n) {
 		double res = f(p, n); // give it to the function to play with
 		clock_t t1 = clock();
 		cout << setw(12) << msg << setw(18) << res << '\t' << (t1-t0) << '\n';
+		totalTime+=t1-t0;
 	}
   delete [] p;
+	cout<<setw(12)<<"AVG:"<<setw(18)<<"\t"<<(totalTime/10)<<'\n';
 }
 
 // integer parameter returning float
 template<typename Func>
 void benchmark5(const char msg[], Func f, uint32_t n) {
+	clock_t totalTime=0;
 	for (uint32_t trials = 0; trials < 10; trials++) {
 		clock_t t0 = clock();
 		float res = f(n); // give it to the function to play with
 		clock_t t1 = clock();
 		cout << setw(12) << msg << setw(18) << res << '\t' << (t1-t0) << '\n';
+		totalTime+=t1-t0;
 	}
+	cout<<setw(12)<<"AVG:"<<setw(18)<<"\t"<<(totalTime/10)<<'\n';
 }
 
 // integer parameter returning double
 template<typename Func>
 void benchmark6(const char msg[], Func f, uint32_t n) {
+	clock_t totalTime=0;
 	for (uint32_t trials = 0; trials < 10; trials++) {
 		clock_t t0 = clock();
 		double res = f(n); // give it to the function to play with
 		clock_t t1 = clock();
 		cout << setw(12) << msg << setw(18) << res << '\t' << (t1-t0) << '\n';
+		totalTime+=t1-t0;
 	}
+	cout<<setw(12)<<"AVG:"<<setw(18)<<"\t"<<(totalTime/10)<<'\n';
 }
 
 // integer parameter returning double
 template<typename Func>
 void benchmark7(const char msg[], Func f, uint32_t n) {
+	clock_t totalTime=0;
   float* a = new float[n*n];
   for (int i = 0; i < n*n; i++)
     a[i] = 0;
@@ -495,14 +514,16 @@ void benchmark7(const char msg[], Func f, uint32_t n) {
 		f(c, a, b, n); // give it to the function to play with
 		clock_t t1 = clock();
 		cout << setw(12) << msg << '\t' << (t1-t0) << '\n';
+		totalTime+=t1-t0;
 	}
+	cout<<setw(12)<<"AVG:"<<setw(18)<<"\t"<<(totalTime/10)<<'\n';
 }
 
 int main() {
 	const uint32_t n = 100000000; // 100 million
-	//  benchmark1("a1", a1, n);
-	//	benchmark1("a2", a2, n);
-
+	benchmark1("a1", a1, n);
+	benchmark1("a2", a2, n);
+	#if 0
 	benchmark1("b1", b1, n);
 	benchmark1("b2", b2, n); // compare b1 and b2. What can you conclude?
 	benchmark1("b3", b3, n);
@@ -546,5 +567,5 @@ int main() {
   	benchmark7("matmult2", matmult2, 256);
  	benchmark7("matmult3", matmult3, 256);
  	benchmark7("matmult4", matmult4, 256);
-
+	#endif
 }
