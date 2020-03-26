@@ -392,6 +392,46 @@ void matmult4(float ans[], float a[], float b[], uint32_t n) {
     }
 }
 
+constexpr double PI = 3.14159265358979;
+/*
+	Second part, added March 20, 2020
+*/
+
+/* Compute the product of all these terms. Look at the assembly language. Can you come up with a more efficient way to get the same answer? Benchmark the original and your better version.
+*/
+double deg2rad(uint32_t n) {
+	const double x = 0.001;
+	double y = 1;
+	for (uint32_t i = 0; i < n; i++) {
+		y = y * x * PI / 180;
+	}
+	return y;
+}
+
+/* 
+	 The force due to gravity is:
+	 F = G*m1*m2 / (r*r)
+	 The acceleration of mass 1 is
+	 a =  F / m1
+*/
+double grav(uint32_t n) {
+	constexpr double G =  6.6742E-11; // universal gravitational constant
+	double x = 0; // one dimensional problem. Start at x = 0
+	double v = 0; // velocity = 0 to start
+	double r = 1.5e12; // distance apart
+	const double m1 = 5.972e24;      // earth mass
+	const double m2 = 7.34767309e22; // moon mass
+	constexpr double dt = 0.1; // 0.1 second timestep
+	for (uint32_t i = 0; i < n; i++) {
+		double F = G * m1 * m2 / (r*r);
+		double a = F / m1;
+		x = x + v * dt + 0.5*a * dt * dt;
+		v = v + a * dt;
+	}
+	return x;
+}
+
+
 /*
 	benchmarking a few instructions almost never makes sense
 
@@ -520,10 +560,12 @@ void benchmark7(const char msg[], Func f, uint32_t n) {
 }
 
 int main() {
+	
 	const uint32_t n = 100000000; // 100 million
+	#if 0	
 	benchmark1("a1", a1, n);
 	benchmark1("a2", a2, n);
-	#if 0
+	
 	benchmark1("b1", b1, n);
 	benchmark1("b2", b2, n); // compare b1 and b2. What can you conclude?
 	benchmark1("b3", b3, n);
@@ -568,4 +610,8 @@ int main() {
  	benchmark7("matmult3", matmult3, 256);
  	benchmark7("matmult4", matmult4, 256);
 	#endif
+
+	benchmark6("deg2rad", deg2rad, n);
+	benchmark6("grav", grav, n);
+
 }
