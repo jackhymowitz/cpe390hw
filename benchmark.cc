@@ -562,9 +562,9 @@ void benchmark7(const char msg[], Func f, uint32_t n) {
 int main() {
 	
 	const uint32_t n = 100000000; // 100 million
-	#if 0	
-	benchmark1("a1", a1, n);
-	benchmark1("a2", a2, n);
+	
+	//benchmark1("a1", a1, n);
+	//benchmark1("a2", a2, n);
 	
 	benchmark1("b1", b1, n);
 	benchmark1("b2", b2, n); // compare b1 and b2. What can you conclude?
@@ -609,8 +609,6 @@ int main() {
   	benchmark7("matmult2", matmult2, 256);
  	benchmark7("matmult3", matmult3, 256);
  	benchmark7("matmult4", matmult4, 256);
-	#endif
-
 	benchmark6("deg2rad", deg2rad, n);
 	benchmark6("grav", grav, n);
 
