@@ -73,8 +73,8 @@ It is called BIC (bit clear)
 
 // wipe out the last 3 hex digits of the first number by anding with the second
 // then replace with the numbers 0x123
-  //answer =  replaceBits(0xF0F0A5A5, 0xFFFFF000, 0x123);
-  //cout << hex << answer << '\n'; // should be 0xF0F0A123
+  	answer =  replaceBits(0xF0F0A5A5, 0xFFFFF000, 0x123);
+  	cout << hex << answer << '\n'; // should be 0xF0F0A123
 
 	int r = 255, g = 0, b = 0;
   uint32_t color = buildColor(r, g, b);

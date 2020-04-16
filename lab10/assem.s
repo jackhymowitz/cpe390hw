@@ -22,7 +22,7 @@ _Z4flipii:
 	eor r0, r2
 	bx lr
 
-_Z11replaceBitsii:
+_Z11replaceBitsiii:
 	and r0, r1
 	bic r3, r1
 	orr r0, r3
