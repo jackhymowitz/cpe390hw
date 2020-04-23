@@ -1,0 +1,13 @@
+creating body Sun orbiting piö¶ at angle -0.766334 radians or -43.91degrees
+Sun	0,-0,0	0,0,0	0,0,0
+creating body Earth orbiting piö¶ at angle -6.82868 radians or -391.25degrees
+Earth	1.25752e+11,-7.89156e+10,0	27.1982,44.8133,0	0,0,0
+creating body Mars orbiting piö¶ at angle 4.29952 radians or 246.34degrees
+Mars	-8.28959e+10,-2.28261e+11,0	12.321,-5.39717,0	0,0,0
+creating body Mars orbiting piö¶ at angle -6.75561 radians or -387.07degrees
+Mars	1.8397e+11,-1.13398e+11,0	6.81954,13.3449,0	0,0,0
+GravSim t=1e+08
+Sun	-1.02083e+07,7.39447e+06,0	-0.11137,0.0814015,0	-2.35207e-11,2.02696e-11,0
+Earth	3.35799e+12,-2.09639e+12,0	35194.4,-21969.9,0	7.18598e-06,-4.48621e-06,0
+Mars	-1.00946e+12,-2.78638e+12,0	-10790.3,-29787.5,0	-5.14841e-06,-1.42111e-05,0
+Mars	2.70908e+12,-1.66237e+12,0	28842.7,-17693.7,0	1.11994e-05,-6.87225e-06,0
