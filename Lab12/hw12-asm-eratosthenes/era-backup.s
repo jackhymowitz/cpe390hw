@@ -94,6 +94,7 @@ _Z3eraPjj:
 	mov r6, r3
 	mov r9, #0
 
+.L7:
 	lsr r11, r4, #2 @The real prime number
 	sub r10, r11, #32
     mov r5, #1
@@ -102,27 +103,17 @@ _Z3eraPjj:
     add r5, #1
     adds r10, r11
     blt .L5
-	@Now have 1s separated by the prime number, rightmost is 1
-	lsl r5, r6		@Now make r6-1 zeros
-	add r7, r0, r9
-	b .L6
-.L7:
-	clz r10, r5
-	sub r10, r4, r10
-	sub r6, r10, r6
 	lsl r5, r6
-	lsr r10, r5, r4
-	orr r5, r10
-	@add r6, r10	
-	@cmp r6, r11
-	@subge r6, r11
+	add r6, r10
+	cmp r6, r11
+	subge r6, r11
     add r7, r0, r9
 .L6:
 	ldr r10, [r7]
 	orr r10, r5
     str r10, [r7], r4
-    cmp r7, r8
-    ble .L6
+    cmp r8, r7
+    bgt .L6
 
     add r9, #4
     cmp r9, r4
