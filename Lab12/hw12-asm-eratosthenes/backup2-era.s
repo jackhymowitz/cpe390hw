@@ -15,11 +15,11 @@ _Z3eraPjj:
 	@r9 is the counter for the number of write cycles
 	@r10 is a temp variable and the current part of big array
 	@r11 is the first part of big array with the current index in it
-@Note: This program requires n of at least 10000 or so
+
 @SECTION 1: Init and multiples of 3 eliminated
 
-	mov r2, #2 		@We have found 2 and 3
-    mov r3, #1 		@this means 3, 2x+1
+	mov r2, #2 @We have found 2 and 3
+    mov r3, #1 @this means 3, 2x+1
 
 	@lsl r4, r3, #1
     @add r4, #1    
@@ -51,6 +51,11 @@ _Z3eraPjj:
 	cmp r7, r8
 	blt .L2
 
+	@lsl r10, r5, r6
+	@rsb r6, #32
+	@lsr r5, r5, r6
+	@rsb r6, #32
+	@orr r5, r10
 	lsl r5, #1
 	lsr r10, r5, #3
 	orr r5, r10
@@ -58,9 +63,10 @@ _Z3eraPjj:
 	cmp r9, r4
 	bne .L3
 
+	add r3, #1
+
 @SECTION 2: Prime numbers below 32
 .SEC2:
-	add r3, #1
 	ldr r11, [r0]		@Load the first 32 primes, select the current one
 	mov r5, #1
 	lsl r5, r3
@@ -77,21 +83,32 @@ _Z3eraPjj:
 	add r2, #1
 	lsl r4, r3, #3 @4 times the prime number
 	add r4, #4
-    	
+    
+	@push {r0-r3}
+    @mov r0, r4
+	@lsr r0, #2
+    @bl _Z5printi
+    @pop {r0-r3}
+	
 	mov r6, r3
 	mov r9, #0
 
 	lsr r11, r4, #2 @The real prime number
 	
+	push {r0-r3}
+	mov r0, r11
+	bl _Z5printi
+	pop {r0-r3}
+
 	sub r10, r11, #32
     mov r5, #1
-.L5:				@make pattern of 1s and 0s, prime number apart
+.L5:
     lsl r5, r11
     add r5, #1
     adds r10, r11
     blt .L5
-					@Now have 1s separated by the prime number, rightmost is 1
-	lsl r5, r6		@Now make r6 zeros
+	@Now have 1s separated by the prime number, rightmost is 1
+	lsl r5, r6		@Now make r6-1 zeros
 	add r7, r0, r9
 .L6:	
 	ldr r10, [r7]
@@ -102,18 +119,21 @@ _Z3eraPjj:
 
     add r9, #4
     cmp r9, r4
+    addeq r3, #1
     beq .SEC2
+.DEBUG:
 .L7:
-	@Free variables: r7, r10, r11
 	clz r10, r5			@r10 should be zeros in the beginning of r5
-	lsr r11, r4, #2		@r11 is real prime number
-	lsr r5, r6			@shift pattern so rightmost is 1 again
-	sub r6, r11, r10	@now find out the new location of rightmost 1
-	sub r6, #1			@needs this correction factor
-	lsl r5, r6			@and implement it
-	lsl r10, r5, r11	@copy the pattern one unit to the left,
-	orr r5, r10			@in case we have lost the leftmost 1 
-
+	lsr r7, r4, #2
+	sub r10, r7, r10	@Get the remaining pattern needed in the next one
+	lsr r5, r6
+	lsl r5, r10
+	lsl r6, r5, r7		
+	orr r5, r6
+	mov r6, r10			@Save the difference
+	@add r6, r10	
+	@cmp r6, r11
+	@subge r6, r11
     add r7, r0, r9
 	b .L6
 
@@ -160,9 +180,17 @@ _Z3eraPjj:
 	lsl r4, r3, #1		@Put the real value in r4
 	add r4, #1
 
-	@add r6, r3, r4		@First index of multiple of this number
-	mul r6, r4, r4
-	lsr r6, #1			@Actually, the first one to check is the square
+	push {r0-r3}
+    mov r0, r4
+    bl _Z5printi
+    pop {r0-r3}
+
+    @push {r0-r3}
+    @mov r0, r4
+    @bl _Z5printi
+    @pop {r0-r3}
+
+	add r6, r3, r4		@First index of multiple of this number
 	lsr r7, r6, #3		@Move the array index into r7
 	bic r7, #3
 	add r7, r0
@@ -190,6 +218,15 @@ _Z3eraPjj:
 .SEC4:
 	add r3, #1
 
+	@push {r0-r3}
+    @mov r0, r3
+	@lsl r0, #1
+	@add r0, #1
+    @bl _Z5printi
+	@mov r0, #128
+ 	@bl _Z5printi
+    @pop {r0-r3}
+
 	lsr r7, r3, #3
 	bic r7, #3
 	add r7, r0
@@ -206,6 +243,12 @@ _Z3eraPjj:
 	ands r9, r5, r11
 	addeq r2, #1
 	bne .NOT
+	push {r0-r3}
+    mov r0, r3
+	lsl r0, #1
+	add r0, #1
+    bl _Z5printi
+    pop {r0-r3}
 .NOT:
 	add r3, #1
 	ror r5, #31
@@ -215,6 +258,10 @@ _Z3eraPjj:
 	
 @Cleanup:
 .DONE:
+	@push {r0-r3}
+	@mov r0, r2
+    @bl _Z5printi
+    @pop {r0-r3}
 	mov r0, r2
 	pop {r4-r11}
 	bx lr

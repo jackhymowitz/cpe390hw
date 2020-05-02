@@ -22,15 +22,10 @@ using namespace std;
 extern uint32_t era(uint32_t* array, uint32_t n); //tosthenes
 
 int main() {
-	//uint32_t n = 1000000000;
-	uint32_t n=10000;
+	uint32_t n = 1000000000;
+	//uint32_t n = 10000;
 	uint32_t* sieve = new uint32_t[(n+31)/32];
 	uint32_t count = era(sieve, n);
 	cout << "Primes up to " << n << " = " << count << '\n';
 	delete [] sieve;
-}
-
-void print(int x)
-{
-	cout << x << endl;
 }
